@@ -85,7 +85,7 @@ pub const NO_SYMBOL: u32 = 0;
 /// that must not be freed
 /// it is instead bound to the lifetime of its parent that it borrows immutably
 pub struct StructPtr<'a, T: 'a> {
-    pub ptr: *mut T,
+    pub(crate) ptr: *mut T,
     phantom: PhantomData<&'a T>
 }
 
@@ -93,7 +93,7 @@ pub struct StructPtr<'a, T: 'a> {
 /// `Event` wraps a pointer to `xcb_*_event_t`
 /// this pointer will be freed when the `Event` goes out of scope
 pub struct Event<T> {
-   pub ptr: *mut T
+   pub(crate) ptr: *mut T
 }
 
 impl<T> Event<T> {
@@ -131,7 +131,7 @@ pub unsafe fn cast_event<'r, T>(event : &'r GenericEvent) -> &'r T {
 /// this pointer will be freed when the `Error` goes out of scope
 #[derive(Debug)]
 pub struct Error<T> {
-    pub ptr: *mut T
+    pub(crate) ptr: *mut T
 }
 
 impl<T> Error<T> {
@@ -237,7 +237,7 @@ unsafe impl<'a, T: Copy + CookieSeq> Sync for Cookie<'a, T> {}
 /// Wraps a pointer to a `xcb_*_reply_t`
 /// the pointer is freed when the `Reply` goes out of scope
 pub struct Reply<T> {
-    pub ptr: *mut T
+    pub(crate) ptr: *mut T
 }
 
 impl<T> Drop for Reply<T> {
